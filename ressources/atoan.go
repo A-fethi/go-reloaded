@@ -21,7 +21,7 @@ func IsVowel(s string) bool {
 	}
 	vowels := "aeiouhAEIOUH"
 	for _, vowel := range vowels {
-		if s[0] == byte(vowel) {
+		if rune(s[0]) == vowel {
 			return true
 		}
 	}

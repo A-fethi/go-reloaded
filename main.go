@@ -14,6 +14,8 @@ func main() {
 	} else {
 		content, _ := os.ReadFile(os.Args[1])
 		str := string(content)
+		str = goreloaded.Punctuations(str)
+		fmt.Println(str)
 		SplitedStr := strings.Fields(str)
 		fmt.Println(SplitedStr)
 		goreloaded.Atoan(SplitedStr)
