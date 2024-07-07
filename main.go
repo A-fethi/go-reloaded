@@ -16,6 +16,7 @@ func main() {
 		str := string(content)
 		SplitedStr := strings.Fields(str)
 		fmt.Println(SplitedStr)
+		goreloaded.Atoan(SplitedStr)
 		for i := 0; i < len(SplitedStr); i++ {
 			if SplitedStr[i] == "(hex)" {
 				SplitedStr[i-1] = goreloaded.HexConv(SplitedStr[i-1])
