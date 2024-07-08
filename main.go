@@ -32,22 +32,23 @@ func main() {
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
 			} else if SplitedStr[i] == "(up," {
-				if SplitedStr[i] == "(up," {
-					if i+1 < len(SplitedStr) {
-						nb, valid := IsNumeric(SplitedStr[i+1])
-						if valid {
-							end := i - nb
-							if end < 0 {
-								end = 0
-							}
-							for j := i - 1; j >= end; j-- {
-								SplitedStr[j] = strings.ToUpper(SplitedStr[j])
-							}
-							SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
-							i--
-						}
-					}
-				}
+				SplitedStr, i = upper(SplitedStr, i)
+				// if SplitedStr[i] == "(up," {
+				// 	if i+1 < len(SplitedStr) {
+				// 		nb, valid := IsNumeric(SplitedStr[i+1])
+				// 		if valid {
+				// 			end := i - nb
+				// 			if end < 0 {
+				// 				end = 0
+				// 			}
+				// 			for j := i - 1; j >= end; j-- {
+				// 				SplitedStr[j] = strings.ToUpper(SplitedStr[j])
+				// 			}
+				// 			SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				// 			i--
+				// 		}
+				// 	}
+				// }
 			} else if SplitedStr[i] == "(low)" {
 				SplitedStr[i-1] = strings.ToLower(SplitedStr[i-1])
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
@@ -59,7 +60,7 @@ func main() {
 			}
 		}
 		output := strings.Join(SplitedStr, " ")
-		//output = goreloaded.Punctuations(output)
+		output = goreloaded.Punctuations(output)
 		fmt.Println(output)
 		// fmt.Println(len(SplitedStr))
 		// outputFile, _ := os.Create(os.Args[2])
@@ -88,6 +89,25 @@ func IsNumeric(s string) (int, bool) {
 	return n, true
 }
 
+func upper(SplitedStr []string, i int) ([]string, int) {
+	if SplitedStr[i] == "(up," {
+		if i+1 < len(SplitedStr) {
+			nb, valid := IsNumeric(SplitedStr[i+1])
+			if valid {
+				end := i - nb
+				if end < 0 {
+					end = 0
+				}
+				for j := i - 1; j >= end; j-- {
+					SplitedStr[j] = strings.ToUpper(SplitedStr[j])
+				}
+				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				i--
+			}
+		}
+	}
+	return SplitedStr, i
+} 
 // func IsNumeric(s string) int {
 // 	var n int
 // 	for _, i := range s {
