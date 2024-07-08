@@ -2,15 +2,22 @@ package goreloaded
 
 import (
 	"strconv"
-	"fmt"
 )
 
 func HexConv(hex string) string {
-	nb, _ := strconv.ParseInt(hex, 16, 64)
-	return fmt.Sprint(nb)
+	nb, err := strconv.ParseInt(hex, 16, 64)
+	if err == nil {
+		return strconv.Itoa(int(nb))
+	} else {
+		return hex
+	}
 }
 
 func BinConv(bin string) string {
-	nb, _ := strconv.ParseInt(bin, 2, 64)
-	return fmt.Sprint(nb)
+	nb, err := strconv.ParseInt(bin, 2, 64)
+	if err == nil {
+		return strconv.Itoa(int(nb))
+	} else {
+		return bin
+	}
 }
