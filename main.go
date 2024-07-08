@@ -15,7 +15,7 @@ func main() {
 	} else {
 		content, _ := os.ReadFile(os.Args[1])
 		str := string(content)
-		//str = goreloaded.Punctuations(str)
+		// str = goreloaded.Punctuations(str)
 		SplitedStr := strings.Split(str, " ")
 		goreloaded.Atoan(SplitedStr)
 		for i := 0; i <= len(SplitedStr)-1; i++ {
@@ -31,24 +31,6 @@ func main() {
 				SplitedStr[i-1] = strings.ToUpper(SplitedStr[i-1])
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
-			} else if SplitedStr[i] == "(up," {
-				SplitedStr, i = upper(SplitedStr, i)
-				// if SplitedStr[i] == "(up," {
-				// 	if i+1 < len(SplitedStr) {
-				// 		nb, valid := IsNumeric(SplitedStr[i+1])
-				// 		if valid {
-				// 			end := i - nb
-				// 			if end < 0 {
-				// 				end = 0
-				// 			}
-				// 			for j := i - 1; j >= end; j-- {
-				// 				SplitedStr[j] = strings.ToUpper(SplitedStr[j])
-				// 			}
-				// 			SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
-				// 			i--
-				// 		}
-				// 	}
-				// }
 			} else if SplitedStr[i] == "(low)" {
 				SplitedStr[i-1] = strings.ToLower(SplitedStr[i-1])
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
@@ -57,10 +39,18 @@ func main() {
 				SplitedStr[i-1] = goreloaded.Capitalize(SplitedStr[i-1])
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
+			} else if SplitedStr[i] == "(up," {
+				SplitedStr, i = instancesProcess(SplitedStr, i)
+			} else if SplitedStr[i] == "(low," {
+				SplitedStr, i = instancesProcess(SplitedStr, i)
+			} else if SplitedStr[i] == "(cap," {
+				SplitedStr, i = instancesProcess(SplitedStr, i)
 			}
 		}
 		output := strings.Join(SplitedStr, " ")
 		output = goreloaded.Punctuations(output)
+		fields := strings.Fields(output)
+		output = strings.Join(fields, " ")
 		fmt.Println(output)
 		// fmt.Println(len(SplitedStr))
 		// outputFile, _ := os.Create(os.Args[2])
@@ -75,9 +65,7 @@ func main() {
 	// fmt.Println(SplitedStr)
 }
 
-func IsNumeric(s string) (int, bool) {
-	// s = strings.TrimSpace(s)
-	// fmt.Println(s)
+func isNumeric(s string) (int, bool) {
 	if len(s) == 0 || s[len(s)-1] != ')' {
 		return 0, false
 	}
@@ -89,10 +77,10 @@ func IsNumeric(s string) (int, bool) {
 	return n, true
 }
 
-func upper(SplitedStr []string, i int) ([]string, int) {
+func instancesProcess(SplitedStr []string, i int) ([]string, int) {
 	if SplitedStr[i] == "(up," {
 		if i+1 < len(SplitedStr) {
-			nb, valid := IsNumeric(SplitedStr[i+1])
+			nb, valid := isNumeric(SplitedStr[i+1])
 			if valid {
 				end := i - nb
 				if end < 0 {
@@ -105,22 +93,39 @@ func upper(SplitedStr []string, i int) ([]string, int) {
 				i--
 			}
 		}
+	} else if SplitedStr[i] == "(low," {
+		if i+1 < len(SplitedStr) {
+			nb, valid := isNumeric(SplitedStr[i+1])
+			if valid {
+				end := i - nb
+				if end < 0 {
+					end = 0
+				}
+				for j := i - 1; j >= end; j-- {
+					SplitedStr[j] = strings.ToLower(SplitedStr[j])
+				}
+				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				i--
+			}
+		}
+	} else if SplitedStr[i] == "(cap," {
+		if i+1 < len(SplitedStr) {
+			nb, valid := isNumeric(SplitedStr[i+1])
+			if valid {
+				end := i - nb
+				if end < 0 {
+					end = 0
+				}
+				for j := i - 1; j >= end; j-- {
+					SplitedStr[j] = goreloaded.Capitalize(SplitedStr[j])
+				}
+				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				i--
+			}
+		}
 	}
 	return SplitedStr, i
-} 
-// func IsNumeric(s string) int {
-// 	var n int
-// 	for _, i := range s {
-// 		if i >= '0' && i <= '9' {
-// 			n += int(i - '0')
-// 		} else {
-// 			continue
-// 		}
-// 	}
-// 	return n
-// }
-
-// fmt.Println(splitedStr)
+}
 
 // output := strings.Join(splitedStr, " ")
 // err = os.WriteFile(os.Args[2], []byte(output), 0644)
