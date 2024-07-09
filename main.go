@@ -13,13 +13,38 @@ func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("Invalid Arguments")
 	} else {
-		content, _ := os.ReadFile(os.Args[1])
+		content, err := os.ReadFile(os.Args[1])
+		if err != nil {
+			fmt.Println("Error reading file:", err)
+			return
+		}
+
 		str := string(content)
+		// SplitedStr := strings.Split(str, " ")
 		// str = goreloaded.Punctuations(str)
-		SplitedStr := strings.Split(str, " ")
+		splitedStr := strings.Split(str, "\n")
+		// fmt.Println(len(splitedStr))
+		var SplitedStr []string
+		for i, line := range splitedStr {
+			words := strings.Split(line, " ")
+			SplitedStr = append(SplitedStr, words...)
+			if i < len(splitedStr)-1 {
+				SplitedStr = append(SplitedStr, "\n")
+			}
+		}
+
+		// for i, line := range splitedStr {
+		// 	words := strings.Split(line, " ")
+		// 	if i != len(splitedStr)-1 {
+		// 		words[len(words)-1] += "\n"
+		// 	}
+		// 	SplitedStr = append(SplitedStr, words...)
+		// }
+		// fmt.Println([]byte(SplitedStr[1]))
 		goreloaded.Atoan(SplitedStr)
 		for i := 0; i <= len(SplitedStr)-1; i++ {
 			if SplitedStr[i] == "(hex)" {
+				SplitedStr[i-1] = strings.TrimSuffix(SplitedStr[i-1], "\n")
 				SplitedStr[i-1] = goreloaded.HexConv(SplitedStr[i-1])
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
@@ -47,11 +72,21 @@ func main() {
 				SplitedStr, i = instancesProcess(SplitedStr, i)
 			}
 		}
-		output := strings.Join(SplitedStr, " ")
+		var output string
+		// fmt.Println(SplitedStr[1])
+		for i, str := range SplitedStr {
+			output += str
+			if str != "\n" && i < len(SplitedStr)-1 && SplitedStr[i+1] != "\n" {
+			// if !strings.HasSuffix(str, "\n") && i != len(SplitedStr)-1 {
+				output += " "
+			}
+		}
+		// output = strings.Join(SplitedStr, " ")
 		output = goreloaded.Punctuations(output)
-		fields := strings.Fields(output)
-		output = strings.Join(fields, " ")
+		// fields := strings.Fields(output)
+		// output = strings.Join(fields, " ")
 		fmt.Println(output)
+		// fmt.Println(SplitedStr)
 		// fmt.Println(len(SplitedStr))
 		// outputFile, _ := os.Create(os.Args[2])
 		// defer outputFile.Close()
