@@ -106,7 +106,7 @@ func isNumeric(s string) (int, bool) {
 	}
 	s = s[:len(s)-1] // Remove the closing parenthesis
 	n, err := strconv.Atoi(s)
-	if err != nil {
+	if err != nil || n < 0 {
 		return 0, false
 	}
 	return n, true

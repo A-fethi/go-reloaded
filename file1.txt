@@ -1,2 +1,1 @@
-test (cap) test     ,hh    (up) TEST (low) 1E (hex) 10 (bin) done (up) 1E (hex) love
-(up) a aklwejrigfb
+if the bracets are open like this (     word    ) , it shopuld turned to this : (word)
