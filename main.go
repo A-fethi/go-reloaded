@@ -11,7 +11,7 @@ import (
 
 func main() {
 	if len(os.Args) != 3 {
-		fmt.Println("Invalid Arguments")
+		fmt.Println("Usage: go run main.go <input_file> <output_file>")
 	} else {
 		content, err := os.ReadFile(os.Args[1])
 		if err != nil {
@@ -20,27 +20,16 @@ func main() {
 		}
 
 		str := string(content)
-		// SplitedStr := strings.Split(str, " ")
-		// str = goreloaded.Punctuations(str)
-		splitedStr := strings.Split(str, "\n")
-		// fmt.Println(len(splitedStr))
-		var SplitedStr []string
-		for i, line := range splitedStr {
-			words := strings.Split(line, " ")
-			SplitedStr = append(SplitedStr, words...)
-			if i < len(splitedStr)-1 {
-				SplitedStr = append(SplitedStr, "\n")
-			}
-		}
-
-		// for i, line := range splitedStr {
+		// splitedStr := strings.Split(str, "\n")
+		SplitedStr := strings.Fields(str)
+		// var SplitedStr []string
+		// for i, line := range SplitedStr {
 		// 	words := strings.Split(line, " ")
-		// 	if i != len(splitedStr)-1 {
-		// 		words[len(words)-1] += "\n"
-		// 	}
 		// 	SplitedStr = append(SplitedStr, words...)
+		// 	if i < len(SplitedStr)-1 {
+		// 		SplitedStr = append(SplitedStr, "\n")
+		// 	}
 		// }
-		// fmt.Println([]byte(SplitedStr[1]))
 		goreloaded.Atoan(SplitedStr)
 		for i := 0; i <= len(SplitedStr)-1; i++ {
 			if SplitedStr[i] == "(hex)" {
@@ -72,32 +61,17 @@ func main() {
 				SplitedStr, i = instancesProcess(SplitedStr, i)
 			}
 		}
-		var output string
-		// fmt.Println(SplitedStr[1])
-		for i, str := range SplitedStr {
-			output += str
-			if str != "\n" && i < len(SplitedStr)-1 && SplitedStr[i+1] != "\n" {
-			// if !strings.HasSuffix(str, "\n") && i != len(SplitedStr)-1 {
-				output += " "
-			}
-		}
-		// output = strings.Join(SplitedStr, " ")
-		output = goreloaded.Punctuations(output)
-		// fields := strings.Fields(output)
-		// output = strings.Join(fields, " ")
-		fmt.Println(output)
-		// fmt.Println(SplitedStr)
-		// fmt.Println(len(SplitedStr))
-		// outputFile, _ := os.Create(os.Args[2])
-		// defer outputFile.Close()
-		// output := os.WriteFile(os.Args[2], content, 0o666)
-		// if output != nil {
-		// 	fmt.Println(output)
-		// 	return
+		// var output string
+		// for i, str := range SplitedStr {
+		// 	output += str
+		// 	if str != "\n" && i < len(SplitedStr)-1 && SplitedStr[i+1] != "\n" {
+		// 		output += " "
+		// 	}
 		// }
+		output := strings.Join(SplitedStr, " ")
+		output = goreloaded.Punctuations(output)
+		fmt.Println(output)
 	}
-
-	// fmt.Println(SplitedStr)
 }
 
 func isNumeric(s string) (int, bool) {
@@ -161,10 +135,3 @@ func instancesProcess(SplitedStr []string, i int) ([]string, int) {
 	}
 	return SplitedStr, i
 }
-
-// output := strings.Join(splitedStr, " ")
-// err = os.WriteFile(os.Args[2], []byte(output), 0644)
-// if err != nil {
-// 	fmt.Println("Error writing to file:", err)
-// 	return
-// }

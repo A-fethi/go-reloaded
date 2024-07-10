@@ -1,1 +1,1 @@
-if the bracets are open like this (     word    ) , it shopuld turned to this : (word)
+c...c
