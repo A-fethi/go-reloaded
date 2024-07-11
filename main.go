@@ -20,37 +20,47 @@ func main() {
 		}
 
 		str := string(content)
-		// splitedStr := strings.Split(str, "\n")
-		SplitedStr := strings.Fields(str)
-		// var SplitedStr []string
-		// for i, line := range SplitedStr {
-		// 	words := strings.Split(line, " ")
-		// 	SplitedStr = append(SplitedStr, words...)
-		// 	if i < len(SplitedStr)-1 {
-		// 		SplitedStr = append(SplitedStr, "\n")
-		// 	}
-		// }
+		splitedStr := strings.Split(str, "\n")
+		// SplitedStr := strings.Fields(str)
+		var SplitedStr []string
+		for i, line := range splitedStr {
+			words := strings.Split(line, " ")
+			SplitedStr = append(SplitedStr, words...)
+			if i < len(splitedStr)-1 {
+				SplitedStr = append(SplitedStr, "\n")
+			}
+		}
 		goreloaded.Atoan(SplitedStr)
-		for i := 0; i <= len(SplitedStr)-1; i++ {
+		for i := 0; i < len(SplitedStr); i++ {
 			if SplitedStr[i] == "(hex)" {
-				SplitedStr[i-1] = strings.TrimSuffix(SplitedStr[i-1], "\n")
-				SplitedStr[i-1] = goreloaded.HexConv(SplitedStr[i-1])
+				// SplitedStr[i-1] = strings.TrimSuffix(SplitedStr[i-1], "\n")
+				if i > 0 {
+					SplitedStr[i-1] = goreloaded.HexConv(SplitedStr[i-1])
+				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
 			} else if SplitedStr[i] == "(bin)" {
-				SplitedStr[i-1] = goreloaded.BinConv(SplitedStr[i-1])
+				if i > 0 {
+					SplitedStr[i-1] = goreloaded.BinConv(SplitedStr[i-1])
+				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
 			} else if SplitedStr[i] == "(up)" {
-				SplitedStr[i-1] = strings.ToUpper(SplitedStr[i-1])
+				if i > 0 {
+					SplitedStr[i-1] = strings.ToUpper(SplitedStr[i-1])
+				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
 			} else if SplitedStr[i] == "(low)" {
-				SplitedStr[i-1] = strings.ToLower(SplitedStr[i-1])
+				if i > 0 {
+					SplitedStr[i-1] = strings.ToLower(SplitedStr[i-1])
+				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
 			} else if SplitedStr[i] == "(cap)" {
-				SplitedStr[i-1] = goreloaded.Capitalize(SplitedStr[i-1])
+				if i > 0 {
+					SplitedStr[i-1] = goreloaded.Capitalize(SplitedStr[i-1])
+				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+1:]...)
 				i--
 			} else if SplitedStr[i] == "(up," {
@@ -61,16 +71,18 @@ func main() {
 				SplitedStr, i = instancesProcess(SplitedStr, i)
 			}
 		}
-		// var output string
-		// for i, str := range SplitedStr {
-		// 	output += str
-		// 	if str != "\n" && i < len(SplitedStr)-1 && SplitedStr[i+1] != "\n" {
-		// 		output += " "
-		// 	}
-		// }
-		output := strings.Join(SplitedStr, " ")
-		output = goreloaded.Punctuations(output)
+		var output string
+		for i, str := range SplitedStr {
+			output += str
+			if str != "\n" && i < len(SplitedStr)-1 && SplitedStr[i+1] != "\n" {
+				output += " "
+			}
+		}
+		// output := strings.Join(SplitedStr, " ")
+		// output = goreloaded.Punctuations(output)
+		// output = goreloaded.Quotes(output)
 		fmt.Println(output)
+		// fmt.Println(len(output))
 	}
 }
 
@@ -96,6 +108,9 @@ func instancesProcess(SplitedStr []string, i int) ([]string, int) {
 					end = 0
 				}
 				for j := i - 1; j >= end; j-- {
+					if SplitedStr[j] == "\n" {
+						break
+					}
 					SplitedStr[j] = strings.ToUpper(SplitedStr[j])
 				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
@@ -111,6 +126,9 @@ func instancesProcess(SplitedStr []string, i int) ([]string, int) {
 					end = 0
 				}
 				for j := i - 1; j >= end; j-- {
+					if SplitedStr[j] == "\n" {
+						break
+					}
 					SplitedStr[j] = strings.ToLower(SplitedStr[j])
 				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
@@ -126,6 +144,9 @@ func instancesProcess(SplitedStr []string, i int) ([]string, int) {
 					end = 0
 				}
 				for j := i - 1; j >= end; j-- {
+					if SplitedStr[j] == "\n" {
+						break
+					}
 					SplitedStr[j] = goreloaded.Capitalize(SplitedStr[j])
 				}
 				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
