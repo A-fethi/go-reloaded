@@ -80,9 +80,8 @@ func main() {
 		}
 		// output := strings.Join(SplitedStr, " ")
 		output = goreloaded.Punctuations(output)
-		// output = goreloaded.Quotes(output)
+		output = goreloaded.Quotes(output)
 		fmt.Println(output)
-		// fmt.Println(len(output))
 	}
 }
 
