@@ -21,7 +21,6 @@ func main() {
 
 		str := string(content)
 		splitedStr := strings.Split(str, "\n")
-		// SplitedStr := strings.Fields(str)
 		var SplitedStr []string
 		for i, line := range splitedStr {
 			words := strings.Split(line, " ")
@@ -33,7 +32,6 @@ func main() {
 		goreloaded.Atoan(SplitedStr)
 		for i := 0; i < len(SplitedStr); i++ {
 			if SplitedStr[i] == "(hex)" {
-				// SplitedStr[i-1] = strings.TrimSuffix(SplitedStr[i-1], "\n")
 				if i > 0 {
 					SplitedStr[i-1] = goreloaded.HexConv(SplitedStr[i-1])
 				}
@@ -78,7 +76,6 @@ func main() {
 				output += " "
 			}
 		}
-		// output := strings.Join(SplitedStr, " ")
 		output = goreloaded.Punctuations(output)
 		output = goreloaded.Quotes(output)
 		fmt.Println(output)

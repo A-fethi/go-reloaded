@@ -1,18 +1,5 @@
 package goreloaded
 
-// import "strings"
-
-// func Punctuations(el string) string {
-// 	result := []rune(el)
-
-// 	for i := 0; i < len(result)-1; i++ {
-// 		if IsPunc(result[i+1]) && result[i] == ' ' {
-// 			result[i+1], result[i] = result[i], result[i+1]
-// 		}
-// 	}
-// 	return string(result)
-// }
-
 func Punctuations(el string) string {
 	result := []rune(el)
 	i := 0
@@ -32,8 +19,7 @@ func Punctuations(el string) string {
 		}
 		i++
 	}
-
-	return DeleteSpaces(string(result))
+	return string(result)
 }
 
 func IsPunc(el rune) bool {
@@ -41,14 +27,4 @@ func IsPunc(el rune) bool {
 		return true
 	}
 	return false
-}
-
-func DeleteSpaces(s string) string {
-	myRune := []rune(s)
-	for i := 0; i < len(myRune)-1; i++ {
-		if myRune[i] == ' ' && myRune[i+1] == ' ' {
-			myRune = append(myRune[:i], append([]rune{'\u0000'}, myRune[i+1:]...)...)
-		}
-	}
-	return string(myRune)
 }

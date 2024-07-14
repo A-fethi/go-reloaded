@@ -1,116 +1,42 @@
 package goreloaded
 
-// func Quotes(s string) string {
-// 	myRune := []rune(s)
-// 	for i, j := 0, len(myRune)-1; i < j; i, j = i+1, j-1 {
-// 		if myRune[i] == '\'' && myRune[i+1] == ' ' {
-// 			myRune = append(myRune[:i+1], myRune[i+2:]...)
-// 		}
-// 		// if myRune[i] == '\'' && myRune[i-1] == ' ' {
-// 		// 	myRune = append(myRune[:i-1], myRune[i:]...)
-// 		// }
-// 		// if i > 0 && myRune[j] == '\'' && myRune[j-1] == ' ' {
-// 		// 	myRune = append(myRune[:j-1], myRune[j:]...)
-// 		// }
-// 	}
-// 	return string(myRune)
-// }
+import "strings"
 
-// func Quotes(s string) string {
-//     runes := []rune(s)
-//     result := []rune{}
-//     inQuote := false
-//     quoteStart := -1
-//     lastWordChar := -1
-
-//     for i, char := range runes {
-//         if char == '\'' {
-//             if !inQuote && (lastWordChar == -1 || i-lastWordChar > 1) {
-//                 // Opening quote: only if it's not inside a word
-//                 inQuote = true
-//                 quoteStart = len(result)
-//                 result = append(result, char)
-//             } else if inQuote {
-//                 // Closing quote
-//                 inQuote = false
-//                 // Trim spaces at the beginning and end of the quote
-//                 for quoteStart+1 < len(result) && result[quoteStart+1] == ' ' {
-//                     result = append(result[:quoteStart+1], result[quoteStart+2:]...)
-//                 }
-//                 for len(result) > 0 && result[len(result)-1] == ' ' {
-//                     result = result[:len(result)-1]
-//                 }
-//                 result = append(result, char)
-//             } else {
-//                 // Quote inside a word or unclosed quote
-//                 result = append(result, char)
-//             }
-//         } else if inQuote && char == ' ' {
-//             // Only add space if it's not at the start or end of the quote
-//             if quoteStart+1 < len(result) && result[len(result)-1] != ' ' && i+1 < len(runes) && runes[i+1] != '\'' {
-//                 result = append(result, char)
-//             }
-//         } else {
-//             result = append(result, char)
-//             if char != ' ' {
-//                 lastWordChar = i
-//             }
-//         }
-//     }
-
-//     // If the quote wasn't closed, treat it as regular text
-//     if inQuote {
-//         result = append([]rune{'\''},  result...)
-//     }
-
-//     return string(result)
-// }
 func Quotes(s string) string {
-    runes := []rune(s)
-    result := []rune{}
-    inQuote := false
-    quoteStart := -1
-    lastWordChar := -1
-    consecutiveQuotes := 0
+	result := ""
+	open := false
+	var start int
 
-    for i, char := range runes {
-        if char == '\'' {
-            consecutiveQuotes++
-            if consecutiveQuotes % 2 == 1 {
-                if !inQuote && (lastWordChar == -1 || i-lastWordChar > 1) {
-                    // Opening quote
-                    inQuote = true
-                    quoteStart = len(result)
-                }
-            } else {
-                if inQuote {
-                    // Closing quote
-                    inQuote = false
-                    // Trim spaces at the beginning and end of the quote
-                    for quoteStart+1 < len(result) && result[quoteStart+1] == ' ' {
-                        result = append(result[:quoteStart+1], result[quoteStart+2:]...)
-                    }
-                    for len(result) > 0 && result[len(result)-1] == ' ' {
-                        result = result[:len(result)-1]
-                    }
-                }
-            }
-            result = append(result, char)
-        } else {
-            consecutiveQuotes = 0
-            if inQuote && char == ' ' {
-                // Only add space if it's not at the start or end of the quote
-                if quoteStart+1 < len(result) && result[len(result)-1] != ' ' && i+1 < len(runes) && runes[i+1] != '\'' {
-                    result = append(result, char)
-                }
-            } else {
-                result = append(result, char)
-                if char != ' ' {
-                    lastWordChar = i
-                }
-            }
-        }
-    }
+	for i, char := range s {
+		if char == '\'' && (i == 0 || s[i-1] == ' ') && (i == len(s)-1 || s[i+1] == ' ') {
+			if !open {
+				open = true
+				start = i
+			} else {
+				// Close the quote
+				content := strings.TrimSpace(s[start+1 : i])
+				result += "'" + content + "'"
+				open = false
+			}
+		} else if !open {
+			result += string(char)
+		}
+	}
 
-    return string(result)
+	// If there's an unclosed quote, add the rest of the string
+	if open {
+		result += s[start:]
+	}
+
+	return DeleteSpaces(result)
+}
+
+func DeleteSpaces(s string) string {
+	myRune := []rune(s)
+	for i := 0; i < len(myRune)-1; i++ {
+		if myRune[i] == ' ' && myRune[i+1] == ' ' {
+			myRune = append(myRune[:i], append([]rune{'\u0000'}, myRune[i+1:]...)...)
+		}
+	}
+	return string(myRune)
 }
