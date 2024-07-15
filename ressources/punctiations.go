@@ -19,7 +19,7 @@ func Punctuations(el string) string {
 		}
 		i++
 	}
-	return string(result)
+	return DeleteSpaces(string(result))
 }
 
 func IsPunc(el rune) bool {
@@ -27,4 +27,14 @@ func IsPunc(el rune) bool {
 		return true
 	}
 	return false
+}
+
+func DeleteSpaces(s string) string {
+	myRune := []rune(s)
+	for i := 0; i < len(myRune)-1; i++ {
+		if myRune[i] == ' ' && myRune[i+1] == ' ' {
+			myRune = append(myRune[:i], myRune[i+1:]...)
+		}
+	}
+	return string(myRune)
 }

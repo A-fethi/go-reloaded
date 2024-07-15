@@ -2,41 +2,51 @@ package goreloaded
 
 import "strings"
 
-func Quotes(s string) string {
+func Quotes(text string) string {
+	singlequote := false
 	result := ""
-	open := false
-	var start int
-
-	for i, char := range s {
-		if char == '\'' && (i == 0 || s[i-1] == ' ') && (i == len(s)-1 || s[i+1] == ' ') {
-			if !open {
-				open = true
-				start = i
-			} else {
-				// Close the quote
-				content := strings.TrimSpace(s[start+1 : i])
-				result += "'" + content + "'"
-				open = false
-			}
-		} else if !open {
+	for i, char := range text {
+		if i == 0 {
 			result += string(char)
+			if string(char) == "'" {
+				singlequote = true
+			}
+		} else {
+			if char != '\'' && char != ' ' {
+				result += string(char)
+			} else if char == '\'' {
+				/*--------handling quotes--------*/
+				if i < len(text)-1 {
+					if string(text[i-1]) != " " && string(text[i-1]) != "\n" && string(text[i+1]) != " " && string(text[i+1]) != "\n" {
+						result += string(char)
+					} else {
+						/*--------handling singe quotes--------*/
+						if !singlequote {
+							singlequote = true
+						} else {
+							singlequote = false
+							result = strings.TrimSuffix(result, " ")
+						}
+						result += string(char)
+					}
+				} else {
+					/*--------handling singe quotes--------*/
+					if singlequote {
+						result = strings.TrimSuffix(result, " ")
+						result += string(char)
+					} else {
+						result += string(char)
+					}
+				}
+			} else if char == ' ' {
+				if string(result[len(result)-1]) == "'" && singlequote {
+					continue
+				} else {
+					result += string(char)
+				}
+			}
 		}
 	}
 
-	// If there's an unclosed quote, add the rest of the string
-	if open {
-		result += s[start:]
-	}
-
-	return DeleteSpaces(result)
-}
-
-func DeleteSpaces(s string) string {
-	myRune := []rune(s)
-	for i := 0; i < len(myRune)-1; i++ {
-		if myRune[i] == ' ' && myRune[i+1] == ' ' {
-			myRune = append(myRune[:i], append([]rune{'\u0000'}, myRune[i+1:]...)...)
-		}
-	}
-	return string(myRune)
+	return result
 }

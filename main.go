@@ -76,9 +76,10 @@ func main() {
 				output += " "
 			}
 		}
+		
 		output = goreloaded.Punctuations(output)
 		output = goreloaded.Quotes(output)
-		fmt.Println(output)
+		fmt.Println((output))
 	}
 }
 
