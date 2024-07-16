@@ -6,7 +6,6 @@ func Punctuations(el string) string {
 
 	for i < len(result) {
 		if i > 0 && IsPunc(result[i]) {
-			// Move punctuation left as long as there are spaces before it
 			j := i
 			for j > 0 && result[j-1] == ' ' {
 				result[j-1], result[j] = result[j], result[j-1]
@@ -31,9 +30,13 @@ func IsPunc(el rune) bool {
 
 func DeleteSpaces(s string) string {
 	myRune := []rune(s)
-	for i := 0; i < len(myRune)-1; i++ {
+	i := 0
+	for i < len(myRune)-1 {
 		if myRune[i] == ' ' && myRune[i+1] == ' ' {
 			myRune = append(myRune[:i], myRune[i+1:]...)
+		} else {
+			// i will be incremented only if i didn't remove spaces
+			i++
 		}
 	}
 	return string(myRune)

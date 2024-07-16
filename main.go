@@ -9,6 +9,77 @@ import (
 	goreloaded "goreloaded/ressources"
 )
 
+func isNumeric(s string) (int, bool) {
+	if len(s) == 0 || s[len(s)-1] != ')' {
+		return 0, false
+	}
+	s = s[:len(s)-1] // Remove the closing parenthesis
+	n, err := strconv.Atoi(s)
+	if err != nil || n < 0 {
+		return 0, false
+	}
+	return n, true
+}
+
+func instancesProcess(SplitedStr []string, i int) ([]string, int) {
+	if SplitedStr[i] == "(up," {
+		if i+1 < len(SplitedStr) {
+			nb, valid := isNumeric(SplitedStr[i+1])
+			if valid {
+				end := i - nb
+				if end < 0 {
+					end = 0
+				}
+				for j := i - 1; j >= end; j-- {
+					if SplitedStr[j] == "\n" {
+						break
+					}
+					SplitedStr[j] = strings.ToUpper(SplitedStr[j])
+				}
+				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				i--
+			}
+		}
+	} else if SplitedStr[i] == "(low," {
+		if i+1 < len(SplitedStr) {
+			nb, valid := isNumeric(SplitedStr[i+1])
+			if valid {
+				end := i - nb
+				if end < 0 {
+					end = 0
+				}
+				for j := i - 1; j >= end; j-- {
+					if SplitedStr[j] == "\n" {
+						break
+					}
+					SplitedStr[j] = strings.ToLower(SplitedStr[j])
+				}
+				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				i--
+			}
+		}
+	} else if SplitedStr[i] == "(cap," {
+		if i+1 < len(SplitedStr) {
+			nb, valid := isNumeric(SplitedStr[i+1])
+			if valid {
+				end := i - nb
+				if end < 0 {
+					end = 0
+				}
+				for j := i - 1; j >= end; j-- {
+					if SplitedStr[j] == "\n" {
+						break
+					}
+					SplitedStr[j] = goreloaded.Capitalize(SplitedStr[j])
+				}
+				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
+				i--
+			}
+		}
+	}
+	return SplitedStr, i
+}
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("Usage: go run . <input_file> <output_file>")
@@ -91,80 +162,9 @@ func main() {
 			} else {
 				fmt.Println("Error: outputFile should be .txt format")
 			}
-			// fmt.Println((output))
+			fmt.Println((output))
 		} else {
 			fmt.Println("Error: inputFile should be .txt format")
 		}
 	}
-}
-
-func isNumeric(s string) (int, bool) {
-	if len(s) == 0 || s[len(s)-1] != ')' {
-		return 0, false
-	}
-	s = s[:len(s)-1] // Remove the closing parenthesis
-	n, err := strconv.Atoi(s)
-	if err != nil || n < 0 {
-		return 0, false
-	}
-	return n, true
-}
-
-func instancesProcess(SplitedStr []string, i int) ([]string, int) {
-	if SplitedStr[i] == "(up," {
-		if i+1 < len(SplitedStr) {
-			nb, valid := isNumeric(SplitedStr[i+1])
-			if valid {
-				end := i - nb
-				if end < 0 {
-					end = 0
-				}
-				for j := i - 1; j >= end; j-- {
-					if SplitedStr[j] == "\n" {
-						break
-					}
-					SplitedStr[j] = strings.ToUpper(SplitedStr[j])
-				}
-				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
-				i--
-			}
-		}
-	} else if SplitedStr[i] == "(low," {
-		if i+1 < len(SplitedStr) {
-			nb, valid := isNumeric(SplitedStr[i+1])
-			if valid {
-				end := i - nb
-				if end < 0 {
-					end = 0
-				}
-				for j := i - 1; j >= end; j-- {
-					if SplitedStr[j] == "\n" {
-						break
-					}
-					SplitedStr[j] = strings.ToLower(SplitedStr[j])
-				}
-				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
-				i--
-			}
-		}
-	} else if SplitedStr[i] == "(cap," {
-		if i+1 < len(SplitedStr) {
-			nb, valid := isNumeric(SplitedStr[i+1])
-			if valid {
-				end := i - nb
-				if end < 0 {
-					end = 0
-				}
-				for j := i - 1; j >= end; j-- {
-					if SplitedStr[j] == "\n" {
-						break
-					}
-					SplitedStr[j] = goreloaded.Capitalize(SplitedStr[j])
-				}
-				SplitedStr = append(SplitedStr[:i], SplitedStr[i+2:]...)
-				i--
-			}
-		}
-	}
-	return SplitedStr, i
 }
