@@ -11,7 +11,11 @@ func Capitalize(s string) string {
 	}
 	var result string
 	for i := 0; i < len(myRune); i++ {
-		result += string(unicode.ToUpper(myRune[i]))
+		if i == 0 {
+			result += string(unicode.ToUpper(myRune[i]))
+		} else if i > 0 {
+			result += string(unicode.ToLower(myRune[i]))
+		}
 	}
 	return result
 }

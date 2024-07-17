@@ -22,7 +22,7 @@ func Quotes(text string) string {
 				/*--------handling quotes in the middle of the word--------*/
 				if i < len(text)-1 {
 					if string(text[i-1]) != " " && string(text[i-1]) != "\n" && 
-					string(text[i+1]) != " " && isAlpha(rune(text[i+1])) && 
+					string(text[i+1]) != " " || isAlpha(rune(text[i+1])) || 
 					IsPunc(rune(text[i+1])) {
 						result += string(char)
 					} else {
