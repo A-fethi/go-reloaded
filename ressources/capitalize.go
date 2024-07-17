@@ -1,12 +1,17 @@
 package goreloaded
 
 import (
-	"strings"
+	"unicode"
 )
 
 func Capitalize(s string) string {
-	if s == "" {
-		return s
+	myRune := []rune(s)
+	if string(myRune) == "" {
+		return string(myRune)
 	}
-	return strings.ToUpper(s[:1]) + strings.ToLower(s[1:])
+	var result string
+	for i := 0; i < len(myRune); i++ {
+		result += string(unicode.ToUpper(myRune[i]))
+	}
+	return result
 }

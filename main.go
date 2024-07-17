@@ -150,7 +150,6 @@ func main() {
 					output += " "
 				}
 			}
-
 			output = goreloaded.Punctuations(output)
 			output = goreloaded.Quotes(output)
 			if strings.HasSuffix(outputFile, ".txt") {

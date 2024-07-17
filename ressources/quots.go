@@ -1,6 +1,8 @@
 package goreloaded
 
 import (
+	"fmt"
+	"os"
 	"strings"
 )
 
@@ -19,11 +21,13 @@ func Quotes(text string) string {
 			} else if char == '\'' {
 				/*--------handling quotes in the middle of the word--------*/
 				if i < len(text)-1 {
-					if string(text[i-1]) != " " && string(text[i-1]) != "\n" && string(text[i+1]) != " " {
+					if string(text[i-1]) != " " && string(text[i-1]) != "\n" && 
+					string(text[i+1]) != " " && isAlpha(rune(text[i+1])) && 
+					IsPunc(rune(text[i+1])) {
 						result += string(char)
 					} else {
 						/*--------handling opening quote--------*/
-						if count == 0  {
+						if count == 0 {
 							count++
 						} else {
 							/*--------handling closing quote--------*/
@@ -54,7 +58,15 @@ func Quotes(text string) string {
 	}
 
 	if count != 0 {
-		panic("Error: missing closed quote")
+		fmt.Println("Error: missing closed quote")
+		os.Exit(0)
 	}
 	return result
+}
+
+func isAlpha(el rune) bool {
+	if (el >= 192 && el <= 255) || (el >= 'a' && el <= 'z') || (el >= 'A' && el <= 'Z') {
+		return true
+	}
+	return false
 }
