@@ -35,7 +35,7 @@ func DeleteSpaces(s string) string {
 		if myRune[i] == ' ' && myRune[i+1] == ' ' {
 			myRune = append(myRune[:i], myRune[i+1:]...)
 		} else {
-			// i will be incremented only if i didn't remove spaces
+			/*-----i will be incremented only if i didn't remove spaces-----*/
 			i++
 		}
 	}

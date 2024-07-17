@@ -17,22 +17,23 @@ func Quotes(text string) string {
 			if char != '\'' && char != ' ' {
 				result += string(char)
 			} else if char == '\'' {
-				/*--------handling quotes--------*/
+				/*--------handling quotes in the middle of the word--------*/
 				if i < len(text)-1 {
 					if string(text[i-1]) != " " && string(text[i-1]) != "\n" && string(text[i+1]) != " " {
 						result += string(char)
 					} else {
-						/*--------handling singe quotes--------*/
+						/*--------handling opening quote--------*/
 						if count == 0  {
 							count++
 						} else {
+							/*--------handling closing quote--------*/
 							result = strings.TrimSuffix(result, " ")
 							count--
 						}
 						result += string(char)
 					}
 				} else {
-					/*--------handling singe quotes--------*/
+					/*--------handling quotes at the end of the text--------*/
 					if count == 1 {
 						result = strings.TrimSuffix(result, " ")
 						result += string(char)
