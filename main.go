@@ -94,6 +94,7 @@ func main() {
 			}
 
 			str := string(content)
+			str = goreloaded.DeleteSpaces(str)
 			splitedStr := strings.Split(str, "\n")
 			var SplitedStr []string
 			for i, line := range splitedStr {
@@ -150,8 +151,11 @@ func main() {
 					output += " "
 				}
 			}
+			
 			output = goreloaded.Punctuations(output)
 			output = goreloaded.Quotes(output)
+			
+
 			if strings.HasSuffix(outputFile, ".txt") {
 				err = os.WriteFile(outputFile, []byte(output), 0o644)
 				if err != nil {
