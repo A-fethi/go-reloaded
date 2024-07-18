@@ -2,7 +2,6 @@ package goreloaded
 
 import (
 	"strings"
-	"unicode"
 )
 
 func Quotes(text string) string {
@@ -20,7 +19,8 @@ func Quotes(text string) string {
 			} else if char == '\'' {
 				/*--------handling quotes in the middle of the word--------*/
 				if i < len(text)-1 {
-					if unicode.IsLetter(rune(text[i-1])) && unicode.IsLetter(rune(text[i+1])) {
+					// if unicode.IsLetter(rune(text[i-1])) && unicode.IsLetter(rune(text[i+1])) {
+					if isChar(string(text[i-1])) && isChar(string(text[i+1])) {
 						result += string(char)
 					} else {
 						/*--------handling opening quote--------*/
@@ -54,4 +54,13 @@ func Quotes(text string) string {
 		}
 	}
 	return result
+}
+
+func isChar(s string) bool {
+	for i := range s {
+		if (s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z') || (s[i] >= 'À' && s[i] <= 'ÿ') {
+			return true
+		}
+	}
+	return false
 }

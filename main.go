@@ -131,6 +131,7 @@ func processFile(inputFile, outputFile string) {
 	}
 
 	str := string(content)
+	str = goreloaded.DeleteSpaces(str)
 	splitedStr := strings.Split(str, "\n")
 	var SplitedStr []string
 	for i, line := range splitedStr {
@@ -142,7 +143,6 @@ func processFile(inputFile, outputFile string) {
 			SplitedStr = append(SplitedStr, "\n")
 		}
 	}
-
 
 	var output string
 	for i, str := range SplitedStr {
@@ -162,7 +162,6 @@ func processFile(inputFile, outputFile string) {
 		return
 	}
 }
-
 
 func main() {
 	if len(os.Args) != 3 {
