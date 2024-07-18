@@ -2,6 +2,7 @@ package goreloaded
 
 import (
 	"strings"
+	"unicode"
 )
 
 func Quotes(text string) string {
@@ -19,8 +20,7 @@ func Quotes(text string) string {
 			} else if char == '\'' {
 				/*--------handling quotes in the middle of the word--------*/
 				if i < len(text)-1 {
-					if string(text[i-1]) != " " && string(text[i-1]) != "\n" &&
-						string(text[i+1]) != " " && string(text[i+1]) != "\n" {
+					if unicode.IsLetter(rune(text[i-1])) && unicode.IsLetter(rune(text[i+1])) {
 						result += string(char)
 					} else {
 						/*--------handling opening quote--------*/
