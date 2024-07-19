@@ -154,7 +154,6 @@ func processFile(inputFile, outputFile string) {
 
 	output = goreloaded.Punctuations(output)
 	output = goreloaded.Quotes(output)
-	println(output)
 
 	err = os.WriteFile(outputFile, []byte(output), 0o644)
 	if err != nil {

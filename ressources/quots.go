@@ -19,7 +19,6 @@ func Quotes(text string) string {
 			} else if char == '\'' {
 				/*--------handling quotes in the middle of the word--------*/
 				if i < len(text)-1 {
-					// if unicode.IsLetter(rune(text[i-1])) && unicode.IsLetter(rune(text[i+1])) {
 					if isChar(string(text[i-1])) && isChar(string(text[i+1])) {
 						result += string(char)
 					} else {
